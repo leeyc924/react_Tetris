@@ -4,21 +4,27 @@ import Document, {
   Main,
   NextScript,
   DocumentContext,
-} from 'next/document'
-import { ServerStyleSheet } from 'styled-components'
+} from 'next/document';
+import { ServerStyleSheet } from 'styled-components';
+import GlobalStyle from '../styles/global-styles';
 
 class MyDocument extends Document {
   static async getInitialProps(ctx: DocumentContext) {
-    const sheet = new ServerStyleSheet()
-    const originalRenderPage = ctx.renderPage
+    const sheet = new ServerStyleSheet();
+    const originalRenderPage = ctx.renderPage;
     try {
       ctx.renderPage = () =>
         originalRenderPage({
           enhanceApp: (App) => (props) =>
-            sheet.collectStyles(<App {...props} />),
-        })
+            sheet.collectStyles(
+              <>
+                <GlobalStyle />
+                <App {...props} />
+              </>,
+            ),
+        });
 
-      const initialProps = await Document.getInitialProps(ctx)
+      const initialProps = await Document.getInitialProps(ctx);
       return {
         ...initialProps,
         styles: (
@@ -27,9 +33,9 @@ class MyDocument extends Document {
             {sheet.getStyleElement()}
           </>
         ),
-      }
+      };
     } finally {
-      sheet.seal()
+      sheet.seal();
     }
   }
 
@@ -38,17 +44,18 @@ class MyDocument extends Document {
       <Html>
         <Head>
           <meta charSet="utf-8" />
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
-          <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;500;700&display=swap" rel="stylesheet" />
+          <link
+            href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
 
-export default MyDocument
+export default MyDocument;
