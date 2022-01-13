@@ -1,37 +1,55 @@
-// import {
-//   combineReducers,
-//   configureStore,
-//   isRejectedWithValue,
-//   Middleware,
-// } from '@reduxjs/toolkit';
-// import { createWrapper, HYDRATE } from 'next-redux-wrapper';
-// import { baseApi } from './baseApi';
+import {
+  AnyAction,
+  combineReducers,
+  configureStore,
+  EnhancedStore,
+  // isRejectedWithValue,
+} from '@reduxjs/toolkit';
+import { createWrapper, HYDRATE } from 'next-redux-wrapper';
+import { baseApi } from './baseApi';
 
-// const createRootReducer = () =>
-//   combineReducers({
-//     [baseApi.reducerPath]: baseApi.reducer,
-//   });
+const rootReducer = (state: any, action: AnyAction) => {
+  switch (action.type) {
+    case HYDRATE: {
+      const nextState = {
+        ...state,
+        ...action.payload,
+      };
+      return nextState;
+    }
 
-// // const unauthenticatedMiddleware: Middleware = ({
-// //   dispatch
-// // }) => (next) => (action) => {
-// //     if (isRejectedWithValue(action) && action.payload.status === 403) {
-// //       dispatch(accountAction.resetState());
-// //     }
+    default: {
+      const combineReducer = combineReducers({
+        [baseApi.reducerPath]: baseApi.reducer,
+      });
+      return combineReducer(state, action);
+    }
+  }
+};
 
-// //     return next(action);
-// //    };
+// const unauthenticatedMiddleware: Middleware = ({
+//   dispatch
+// }) => (next) => (action) => {
+//     if (isRejectedWithValue(action) && action.payload.status === 403) {
+//       dispatch(accountAction.resetState());
+//     }
 
-// const store = configureStore({
-//   reducer: createRootReducer(),
-//   devTools: true,
-//   middleware: (getDefaultMiddleware) => [
-//     ...getDefaultMiddleware(),
-//     baseApi.middleware,
-//   ],
-// });
+//     return next(action);
+//    };
 
-// export const wrapper = createWrapper(store, { debug: process.env.NODE_ENV !== 'production', });
+const store = configureStore({
+  reducer: rootReducer,
+  devTools: true,
+  middleware: (getDefaultMiddleware) => [
+    ...getDefaultMiddleware(),
+    baseApi.middleware,
+  ],
+});
 
+const setupStore = (): EnhancedStore => store;
 
-// export type RootState = ReturnType<typeof store.getState>;
+const makeStore = () => setupStore();
+
+export const wrapper = createWrapper(makeStore, { debug: process.env.NODE_ENV === 'production' });
+
+export type RootState = ReturnType<typeof store.getState>;
