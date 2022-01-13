@@ -1,10 +1,22 @@
+import { IStage } from "../models/stage";
+
 export const STAGE_WIDTH = 12;
 export const STAGE_HEIGHT = 20;
 
-export const createStage = () =>
-  Array.from(Array(STAGE_HEIGHT), () => Array(STAGE_WIDTH).fill([0, 'clear']));
+export const createStage = (): IStage => {
+  const stageArray: any = [];
 
-export const checkCollision = (player, stage, { x: moveX, y: moveY }) => {
+  for (let i = 0; i < STAGE_HEIGHT; i++) {
+    for(var j=0; j < STAGE_WIDTH; j++){
+      stageArray[i][j] = [0, 'clear'];
+    }
+  }
+
+  return stageArray
+  // Array.from(Array(STAGE_HEIGHT), () => Array(STAGE_WIDTH).fill([0, 'clear']))
+};
+
+export const checkCollision = (player: any, stage: any, { x: moveX, y: moveY }: any) => {
   // THIS IS SLOWER!!!
   // return player.tetromino.some((row, y) =>
   //   row.some((cell, x) => {

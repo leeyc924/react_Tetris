@@ -2,20 +2,24 @@ import { NextPage } from 'next';
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 
+import Stage from '../components/Stage';
+
 import usePlayer from '../hooks/usePlayer';
 import useStage from '../hooks/useStage';
+import { IStage } from '../models/stage';
+import { createStage } from '../util/gameHelpers';
+
 
 const Main: NextPage = () => {
-  const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
-  const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
-
+  const [stage, setStage] = useState<IStage>(createStage());
+  console.log('stage', stage);
   const handlePlay = () => {
 
   };
 
   return (
     <Grid>
-      <GameBoard />
+      <Stage stage={stage} />
       <RightColumn>
           <h1>TETRIS</h1>
           <p>
