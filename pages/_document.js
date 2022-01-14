@@ -3,13 +3,13 @@ import Document, {
   Head,
   Main,
   NextScript,
-  DocumentContext,
 } from 'next/document';
 import { ServerStyleSheet } from 'styled-components';
+
 import GlobalStyle from '../styles/global-styles';
 
 class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
+  static async getInitialProps(ctx) {
     const sheet = new ServerStyleSheet();
     const originalRenderPage = ctx.renderPage;
     try {
@@ -45,7 +45,7 @@ class MyDocument extends Document {
         <Head>
           <meta charSet="utf-8" />
           <link
-            href="https://fonts.googleapis.com/css?family=Press+Start+2P"
+            href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=optional"
             rel="stylesheet"
           />
         </Head>

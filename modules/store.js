@@ -2,13 +2,13 @@ import {
   AnyAction,
   combineReducers,
   configureStore,
-  EnhancedStore,
   // isRejectedWithValue,
 } from '@reduxjs/toolkit';
 import { createWrapper, HYDRATE } from 'next-redux-wrapper';
+
 import { baseApi } from './baseApi';
 
-const rootReducer = (state: any, action: AnyAction) => {
+const rootReducer = (state, action) => {
   switch (action.type) {
     case HYDRATE: {
       const nextState = {
@@ -46,10 +46,8 @@ const store = configureStore({
   ],
 });
 
-const setupStore = (): EnhancedStore => store;
+const setupStore = () => store;
 
 const makeStore = () => setupStore();
 
 export const wrapper = createWrapper(makeStore, { debug: process.env.NODE_ENV === 'production' });
-
-export type RootState = ReturnType<typeof store.getState>;

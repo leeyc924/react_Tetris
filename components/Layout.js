@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import React from 'react';
 import styled from 'styled-components';
 
-const Layout: NextPage = ({ children }) => {
+const Layout = ({ children }) => {
   return (
     <Wrap>
       {children}
